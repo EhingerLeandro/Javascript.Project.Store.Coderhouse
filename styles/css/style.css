@@ -259,16 +259,16 @@ header ul li a {
     height: 70%;
   }
   .fixed2 .volver {
-    font-size: 0.75rem;
+    font-size: 0.85rem;
   }
 }
-@media screen and (max-width: 576px) {
+@media screen and (max-width: 768px) {
   .cards {
     height: 50vh;
     width: 80vw;
   }
   .filas {
-    font-size: 0.55rem;
+    font-size: 0.7rem;
   }
 }
 

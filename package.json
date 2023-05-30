@@ -1,0 +1,21 @@
+{
+  "name": "javascript.project.store.coderhouse",
+  "version": "1.0.0",
+  "description": "Simulador sobre tienda virtual, creado como parte del proyecto del curso de javascript en coderhouse.",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "scss": "sass --watch styles/scss/main.scss styles/css/style.css"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/EhingerLeandro/Javascript.Project.Store.Coderhouse.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/EhingerLeandro/Javascript.Project.Store.Coderhouse/issues"
+  },
+  "homepage": "https://github.com/EhingerLeandro/Javascript.Project.Store.Coderhouse#readme"
+}

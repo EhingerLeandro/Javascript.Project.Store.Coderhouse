@@ -39,13 +39,12 @@ function renderCarrito (){
             let fila= document.createElement('div');
             fila.innerHTML=`
                 <div class='fila_datos'>
-                    <b style='color:${color}'>Nombre: </b>${elem.nombre} - <b style='color:${color}'>Cant: </b> ${elem.cantidad}  <b style='color:${color}'>x Precio: </b> $${elem.precio} <b style='color:${color}'> = </b> $${elem.cantidad * elem.precio}   
+                    <b style='color:${color}'>Nombre: </b>${elem.nombre}  <b style='color:${color}'> Cant: </b> ${elem.cantidad}  <b style='color:${color}'>x Precio: </b> $${elem.precio} <b style='color:${color}'> = </b> $${elem.cantidad * elem.precio}   
                 </div>
-                <div class='fila_borra'> 
-                    <img class='icon_borra' src='./images/icon_borra.png'>
+                <div class='fila_borra'>
                     <button class='boton_borra' id='borra-${elem.id}'>Borrar</button>
-                </div>
-            `;
+                </div> `; /*<img class='icon_borra' src='./images/icon_borra.png'>*/
+                
             counterFila += 1;
             fila.classList.add('filas')
             //El '%' Se usa para intercalar las clases de las filas y darles backgrounds diferentes.
