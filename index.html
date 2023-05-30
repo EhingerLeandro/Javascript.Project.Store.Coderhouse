@@ -4,11 +4,46 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" type="text/css" href="style.css">
+    <link rel="stylesheet" type="text/css" href="./styles/css/style.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Alkatra&family=Secular+One&display=swap" rel="stylesheet">
     <title>Document</title>
 </head>
 <body>
-    <h1>Tienda Virtual de Ropa Only-Actitud</h1>
-    <script src="main.js"></script>
+    <header>
+    <h1 id="inicio">Tienda de Ropa Only Actitud</h1>
+        <nav>
+            <ul>
+                <!-- <li><a href='#inicio'>INICIO</a></li> -->
+                <li><a href='#tienda'>TIENDA</a></li>
+                <li><a href='#carrito'>CARRITO</a></li>
+            </ul>
+        </nav>
+    </header>
+    <div id="tienda">
+        <h2 class="titleTienda">TIENDA</h2>
+        <div id="contain_tienda"></div>
+    </div>
+
+    <div id="carrito">
+        <h2 class="titleCarrito">CARRITO</h2>
+        <div id="contain_carrito"></div>
+    </div>
+
+    <a href="#carrito">
+        <div class="fixed">
+            <img class='icon_car'src="./images/icon_carrito.png">
+            <b class="cantidad">(0)</b>
+        </div>
+    </a>
+    <a href="#inicio">
+        <div class=" fixed2">
+            <img class='icon_back'src="./images/icon_volver.png">
+            <div class="volver">Volver</div>
+        </div>
+    </a>
+    <script src="./js/cards.js"></script>
+    <script src="./js/main.js"></script>
 </body>
 </html>
