@@ -151,11 +151,12 @@ header ul li a {
 .filas {
   height: 6rem;
   border: 5px;
-  padding: 10px 0px 0px 0px;
+  padding: 0.8% 0px 0px 0px;
   font-size: 1.25rem;
 }
 .filas .fila_borra {
   height: 2rem;
+  margin-top: 1rem;
 }
 .filas .fila_borra .icon_borra {
   max-width: 100%;
@@ -283,7 +284,7 @@ header ul li a {
     width: 80vw;
   }
   .filas {
-    font-size: 0.8rem;
+    font-size: 0.7rem;
   }
   .grid_container .header-item {
     font-size: 0.6rem;

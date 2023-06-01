@@ -58,7 +58,7 @@ function renderCarrito (){
                 <div class='grid-item grid-texto'>${elem.precio}</div>
                 <div class='grid-item grid-texto'>${elem.cantidad * elem.precio}</div>
                 <div class='grid-item'>
-                    <div class='fila_borra grid-texto'>
+                    <div class='fila_borra'>
                         <img id='borra-${elem.id}' class='icon_borra' src='./images/icon_borra.png'>
                     </div>
                 </div> `; 
