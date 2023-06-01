@@ -2,9 +2,11 @@
 const contain_tienda =document.getElementById('contain_tienda');
 const contain_carrito =document.getElementById('contain_carrito');
 const acumula_items = document.querySelector('.cantidad');
+const carritoGlobal = document.getElementById('carritoGlobal');
 let carrito=[];
 let carritoElegido=[];
 let carritoFiltrado =[];
+let divTotal='';
 
 //Función que dice la cantidad de items añadidos en el 'div' estático con logo de carrito.
 const acumulaCarrito = (array) => {
@@ -28,24 +30,41 @@ const borrarItem =(item)=>{
 function renderCarrito (){
     let carritox = localStorage.getItem('carritoClave');
     carritoElegido = JSON.parse(carritox);
-    contain_carrito.innerHTML='';
+    // Este es el encabezado de la tabla en el render.
+    contain_carrito.innerHTML = `  
+    <div id="carrito_header" class="grid_container">
+        <div class="grid-item header-item">Picture</div>
+        <div class="grid-item header-item">Nombre</div>
+        <div class="grid-item header-item">Cantidad</div>
+        <div class="grid-item header-item">Precio</div>
+        <div class="grid-item header-item">Subtotal</div>
+        <div class="grid-item header-item">Eliminar</div>
+    </div>`;
     let total = 0;
     //Se pregunta si el valor sacado del localStorage es null, es decir si estaba vacio.
     if(carritoElegido !== null){
         let counterFila = 0;
-        let color ='#0ff';
         //Este forEach renderiza cada renglon-fila con los productos agregados al carrito.
         carritoElegido.forEach(elem =>{
-            let fila= document.createElement('div');
+            fila= document.createElement('div');
             fila.innerHTML=`
-                <div class='fila_datos'>
-                    <b style='color:${color}'>Nombre: </b>${elem.nombre}  <b style='color:${color}'> Cant: </b> ${elem.cantidad}  <b style='color:${color}'>x Precio: </b> $${elem.precio} <b style='color:${color}'> = </b> $${elem.cantidad * elem.precio}   
+                <div class='grid-item'>
+                    <div class ='fila_imagen'>
+                        <img class='icon_imagen' src='./images/image_${elem.id}.jpg'>
+                    </div>
                 </div>
-                <div class='fila_borra'>
-                    <button class='boton_borra' id='borra-${elem.id}'>Borrar</button>
-                </div> `; /*<img class='icon_borra' src='./images/icon_borra.png'>*/
+                <div class='grid-item grid-texto'>${elem.nombre}</div>
+                <div class='grid-item grid-texto'>${elem.cantidad}</div>
+                <div class='grid-item grid-texto'>${elem.precio}</div>
+                <div class='grid-item grid-texto'>${elem.cantidad * elem.precio}</div>
+                <div class='grid-item'>
+                    <div class='fila_borra grid-texto'>
+                        <img id='borra-${elem.id}' class='icon_borra' src='./images/icon_borra.png'>
+                    </div>
+                </div> `; 
                 
             counterFila += 1;
+            fila.classList.add('grid_container')
             fila.classList.add('filas')
             //El '%' Se usa para intercalar las clases de las filas y darles backgrounds diferentes.
             fila.classList.add(`fila${counterFila%2 == 0}`);
@@ -64,7 +83,7 @@ function renderCarrito (){
         //Se añade el valor total del carrito al render.
         divTotal= document.createElement('div');
         divTotal.classList.add('divTotal')
-        divTotal.innerHTML = `<div> Total = $${total} </div>`;
+        divTotal.innerHTML = `<div> Total $${total} </div>`;
         contain_carrito.append(divTotal);
     }
 }
