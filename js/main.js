@@ -1,12 +1,16 @@
 //Declarando variables.
 const contain_tienda =document.getElementById('contain_tienda');
 const contain_carrito =document.getElementById('contain_carrito');
+const contain_countries = document.getElementById('contain_countries')
 const acumula_items = document.querySelector('.cantidad');
 const carritoGlobal = document.getElementById('carritoGlobal');
 let carrito=[];
 let carritoElegido=[];
 let carritoFiltrado =[];
+let comingProducts=[];
 let divTotal='';
+let payText ='';
+let payed = false;
 
 //Función que dice la cantidad de items añadidos en el 'div' estático con logo de carrito.
 const acumulaCarrito = (array) => {
@@ -18,12 +22,19 @@ const acumulaCarrito = (array) => {
 
 //Función que borra un item del carrito.
 const borrarItem =(item)=>{
-    let carritoNew = localStorage.getItem('carritoClave');
-    let carritoBorrable =JSON.parse(carritoNew);
-    carritoFiltrado = carritoBorrable.filter(obj => obj.id !== item.id);
-    acumulaCarrito(carritoFiltrado);
-    localStorage.setItem('carritoClave', JSON.stringify(carritoFiltrado));
-    renderCarrito();
+    if(payed===false){
+        let carritoNew = localStorage.getItem('carritoClave');
+        let carritoBorrable =JSON.parse(carritoNew);
+        carritoFiltrado = carritoBorrable.filter(obj => obj.id !== item.id);
+        acumulaCarrito(carritoFiltrado);
+        localStorage.setItem('carritoClave', JSON.stringify(carritoFiltrado));
+        renderCarrito();
+    }else if(payed===true){
+        Toastify({
+            text: "Oprime cancelar compra!",
+            duration: 3000,
+          }).showToast();
+    }
 }
 
 //Función que genera renderizado del carrito.
@@ -42,7 +53,7 @@ function renderCarrito (){
     </div>`;
     let total = 0;
     //Se pregunta si el valor sacado del localStorage es null, es decir si estaba vacio.
-    if(carritoElegido !== null){
+    if(carritoElegido !== null || carritoElegido.length !== 0){
         let counterFila = 0;
         //Este forEach renderiza cada renglon-fila con los productos agregados al carrito.
         carritoElegido.forEach(elem =>{
@@ -82,10 +93,61 @@ function renderCarrito (){
         })
         //Se añade el valor total del carrito al render.
         divTotal= document.createElement('div');
-        divTotal.classList.add('divTotal')
-        divTotal.innerHTML = `<div> Total $${total} </div>`;
+        payText = payed === false ?'Comprar':'Cancelar Compra';
+        divTotal.classList.add('divTotal');
+        divTotal.innerHTML = `<div> Total $${total} </div>
+                              <button id='payOrUndo' class='payOrUndo'>${payText}</button>`
         contain_carrito.append(divTotal);
+
+
+        //Usando Tostify & SweetAlert Confirmandoy cancelado la compra.
+        let botonPayOrUndo = document.getElementById('payOrUndo');
+        botonPayOrUndo.addEventListener('click', ()=>{
+        payText = payed === false ?'Comprar':'Cancelar Compra';
+        if(payed===false){
+            if(carritoElegido.length !==0){
+                Swal.fire({
+                    title: "Compra Realizada!",
+                    text: "El pago ha sido enviado!",
+                    icon: "success",
+                    confirmButtonText: "Aceptar",
+                  });
+                payed=true;
+                renderCarrito();
+            }else{
+                //Toastify Aplicado
+                Toastify({
+                    text: "No tienes ningún producto para comprar!",
+                    duration: 3000,
+                  }).showToast();
+            }
+        }else if(payed===true){
+            //SweetAlert aplicado
+            Swal.fire({
+                title: "Está seguro de que quieres cancelar la compra?",
+                icon: "warning",
+                showCancelButton: true,
+                confirmButtonText: "Sí, seguro",
+                cancelButtonText: "No",
+              }).then((result) => {
+                if (result.isConfirmed) {
+                  //SweetAlert aplicado
+                  Swal.fire({
+                    title: "Compra Cancelada!",
+                    icon: "success",
+                    text: "El pago ha sido devuelto",
+                  });
+                  payed=false;
+                  localStorage.setItem('carritoClave', JSON.stringify([]));
+                  acumulaCarrito([]);
+                  renderCarrito();
+                }
+              });
+        }
+    })
     }
+
+    
 }
 
 //Función que agrega productos aun carrito en el localStorage.

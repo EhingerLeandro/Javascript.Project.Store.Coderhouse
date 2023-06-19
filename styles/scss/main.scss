@@ -48,7 +48,7 @@ header{
 #tienda{
     margin-top: 3%;
     .titleTienda{
-        font-family: 'Secular One';
+        font-family: 'Secular One', sans-serif;
         color:#ffc;
         font-size:2rem;
         text-align: center;
@@ -192,6 +192,20 @@ header{
     color:#0ff;
 }
 
+.payOrUndo{
+    padding:2%;
+    margin:1%;
+    border-radius: 20%;
+    border:3px solid #96f;
+    background-color:rgb(116, 70, 232);
+    color:#fff;
+    box-shadow: 0% 0% 0% 0%;
+    font-size:1rem;
+}
+
+
+
+
 /*---------------ICONOS-------------------*/
 
 .fondo_cambia{
@@ -249,6 +263,43 @@ header{
     }
 }
 
+/*------------PAISES-PUNTOS-DE-VENTA-------------*/
+h4{
+    color: #fff;
+    margin-top: 5%;;
+    text-align: center;
+}
+#countries{
+    margin-top: 5%;
+    padding-top: 2%;
+    background-color: #056a;
+    h2{
+        font-family: 'Secular One', sans-serif;
+        font-size: 2rem;
+        padding: 2% 0% 2% 0%;
+        margin: 3% 0% 3% 0%;
+        color: #fff;
+        background-color: #3337;
+        text-align: center;
+    }
+}
+
+#contain_countries{
+    display:flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    align-items: center;
+}
+
+.cardz{
+    display:flex;
+    justify-content: center;
+    align-items: center;
+    height:30vh;
+    width:15vw;
+    display: inline-block;
+}
+
 /*-------------ABSTRACTS--------------------*/
 
 @media screen and (max-width:992px) {
@@ -256,6 +307,10 @@ header{
         height:50vh;
         width:40vw;
     }
+    .cardz{
+        height:25vh;
+        width:40vw;
+    };
     .filas{
         font-size: 0.8rem;
     }
@@ -292,6 +347,10 @@ header{
         height:50vh;
         width:80vw;
     }
+    .cardz{
+        height:25vh;
+        width:40vw;
+    };
     .filas{
         font-size: 0.7rem;
     }

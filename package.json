@@ -17,5 +17,8 @@
   "bugs": {
     "url": "https://github.com/EhingerLeandro/Javascript.Project.Store.Coderhouse/issues"
   },
-  "homepage": "https://github.com/EhingerLeandro/Javascript.Project.Store.Coderhouse#readme"
+  "homepage": "https://github.com/EhingerLeandro/Javascript.Project.Store.Coderhouse#readme",
+  "dependencies": {
+    "nvm": "^0.0.4"
+  }
 }

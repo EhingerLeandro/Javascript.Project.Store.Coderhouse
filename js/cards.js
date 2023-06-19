@@ -18,6 +18,6 @@ let listaProductos=[
     {id:16, nombre:"Sandalias Grises", precio:40, cantidad:1}, 
     {id:17, nombre:"Chaqueta Sport", precio:110, cantidad:1}, 
     {id:18, nombre:"Chaqueta Táctica", precio:105, cantidad:1}, 
-    {id:19, nombre:"Pantaloneta Gris", precio:40, cantidad:1},
+    {id:19, nombre:"Pantaloneta Playa", precio:40, cantidad:1},
     {id:20, nombre:"Pantaloneta Sport", precio:45, cantidad:1}
 ];
