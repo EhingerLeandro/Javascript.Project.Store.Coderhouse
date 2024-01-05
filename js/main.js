@@ -8,11 +8,22 @@ let carrito=[];
 let carritoElegido=[];
 let carritoFiltrado =[];
 let comingProducts=[];
-let divTotal='';
-let payText ='';
 let payed = false;
+let total = 0;
 
-//Función que dice la cantidad de items añadidos en el 'div' estático con logo de carrito.
+
+let divTotal= document.createElement('div');
+divTotal.classList.add('divTotal');
+function renderTotal(){
+    //Creando los Botones y Displays que se agregaran como parte del carrito.
+    divTotal.innerHTML = `<div id='totalDiv'> Total $${total} </div>
+    <button id='pay' class='payOrUndo'>Comprar Productos</button>
+    <div id='llegada' style='background-color:#fbb8; color:#833; font-size:3vh'> Tu compra llegará dentro de 5 días </div>
+    <button id='undoPayment' class='payOrUndo'>Cancelar Compra</button>`
+}
+
+
+//Función que dice la cantidad de items añadidos en el 'div' estático lateral del logo de carrito.
 const acumulaCarrito = (array) => {
     let acumula = array.reduce( (acc, item) => acc + item.cantidad,0);
     acumula_items.innerHTML = `(${acumula})`;
@@ -39,8 +50,10 @@ const borrarItem =(item)=>{
 
 //Función que genera renderizado del carrito.
 function renderCarrito (){
+   
     let carritox = localStorage.getItem('carritoClave');
     carritoElegido = JSON.parse(carritox);
+
     // Este es el encabezado de la tabla en el render.
     contain_carrito.innerHTML = `  
     <div id="carrito_header" class="grid_container">
@@ -51,10 +64,11 @@ function renderCarrito (){
         <div class="grid-item header-item">Subtotal</div>
         <div class="grid-item header-item">Eliminar</div>
     </div>`;
-    let total = 0;
+
     //Se pregunta si el valor sacado del localStorage es null, es decir si estaba vacio.
-    if(carritoElegido !== null || carritoElegido.length !== 0){
+    if(carritoElegido !== null && carritoElegido.length !== 0){
         let counterFila = 0;
+        total=0;
         //Este forEach renderiza cada renglon-fila con los productos agregados al carrito.
         carritoElegido.forEach(elem =>{
             fila= document.createElement('div');
@@ -77,51 +91,88 @@ function renderCarrito (){
             counterFila += 1;
             fila.classList.add('grid_container')
             fila.classList.add('filas')
+
             //El '%' Se usa para intercalar las clases de las filas y darles backgrounds diferentes.
             fila.classList.add(`fila${counterFila%2 == 0}`);
             contain_carrito.append(fila);
+
             //Se va realizando la sumatoria total, conforme se agregan productos.
+        
             total += elem.cantidad * elem.precio;
-            
+      
             //Se llama la función con la cual se borra un item.
             let botonBorrar = document.getElementById(`borra-${elem.id}`);
             botonBorrar.addEventListener('click', ()=>borrarItem(elem));
 
             //Se llama la función que muestra la cantidad de todos los items añadidos.
             acumulaCarrito(carritoElegido);
-
         })
-        //Se añade el valor total del carrito al render.
-        divTotal= document.createElement('div');
-        payText = payed === false ?'Comprar':'Cancelar Compra';
-        divTotal.classList.add('divTotal');
-        divTotal.innerHTML = `<div> Total $${total} </div>
-                              <button id='payOrUndo' class='payOrUndo'>${payText}</button>`
-        contain_carrito.append(divTotal);
+        renderTotal()
+        buttonActivation(carritoElegido);
 
+    //En caso de no haber ningún item, se renderiza en 0 el total.
+    }else if (carritoElegido === null || carritoElegido.length === 0){
+        total=0;
+        renderTotal()
+        buttonActivation(carritoElegido);
+    }
+    
+    
+}
 
-        //Usando Tostify & SweetAlert Confirmandoy cancelado la compra.
-        let botonPayOrUndo = document.getElementById('payOrUndo');
-        botonPayOrUndo.addEventListener('click', ()=>{
-        payText = payed === false ?'Comprar':'Cancelar Compra';
+//función que activa botones de compra, borrado y cancelado.
+function buttonActivation (carChosen){
+
+    contain_carrito.append(divTotal);
+
+    let totalDiv = document.getElementById('totalDiv')
+    let buttonPay = document.getElementById('pay');
+    let llegada = document.getElementById('llegada'); 
+    let buttonUndo = document.getElementById('undoPayment');
+
+    if(payed === false){
+        totalDiv.style.display="block";
+        buttonPay.style.display="inline-block";
+        llegada.style.display="none";
+        buttonUndo.style.display="none";
+    } else if(payed === true){
+        totalDiv.style.display="none";
+        buttonPay.style.display="none";
+        llegada.style.display="block";
+        buttonUndo.style.display="inline-block";
+
+    }
+
+    //Usando Tostify & SweetAlert Confirmando y cancelado la compra.
+    buttonPay.addEventListener('click', ()=>{
         if(payed===false){
-            if(carritoElegido.length !==0){
+            if(carChosen.length !==0){
                 Swal.fire({
                     title: "Compra Realizada!",
                     text: "El pago ha sido enviado!",
                     icon: "success",
                     confirmButtonText: "Aceptar",
-                  });
+                });
                 payed=true;
+                localStorage.setItem('carritoClave', JSON.stringify([]));
+                acumulaCarrito([]);
                 renderCarrito();
-            }else{
+                let buttonPay = document.getElementById('pay');
+                buttonPay.removeEventListener('click', ()=>{});
+            }else if(carChosen.length ==0){
                 //Toastify Aplicado
                 Toastify({
                     text: "No tienes ningún producto para comprar!",
                     duration: 3000,
-                  }).showToast();
+                }).showToast();
             }
-        }else if(payed===true){
+
+        }
+
+    })
+
+    buttonUndo.addEventListener('click', ()=>{
+        if(payed===true){
             //SweetAlert aplicado
             Swal.fire({
                 title: "Está seguro de que quieres cancelar la compra?",
@@ -129,25 +180,23 @@ function renderCarrito (){
                 showCancelButton: true,
                 confirmButtonText: "Sí, seguro",
                 cancelButtonText: "No",
-              }).then((result) => {
+            }).then((result) => {
                 if (result.isConfirmed) {
-                  //SweetAlert aplicado
-                  Swal.fire({
+                //SweetAlert aplicado
+                Swal.fire({
                     title: "Compra Cancelada!",
                     icon: "success",
                     text: "El pago ha sido devuelto",
-                  });
-                  payed=false;
-                  localStorage.setItem('carritoClave', JSON.stringify([]));
-                  acumulaCarrito([]);
-                  renderCarrito();
+                });
+                payed=false;
+                localStorage.setItem('carritoClave', JSON.stringify([]));
+                acumulaCarrito([]);
+                renderCarrito();
+                buttonUndo.removeEventListener('click', ()=>{})
                 }
-              });
+            });
         }
     })
-    }
-
-    
 }
 
 //Función que agrega productos aun carrito en el localStorage.
@@ -177,7 +226,6 @@ const agregarCarrito = (product) => {
     }
     //Se llama la función para que renderice el carrito.
     renderCarrito();
-  
 }
 
 //Función que muestra toda la lista de productos como cards en la página.
@@ -197,14 +245,14 @@ const generarTienda =()=>{
         
         //Aquí se aplica la función 'agregarCarrito' escrita previamente.
         let botonAgregar = document.getElementById(`add${item.id}`);
-        botonAgregar.addEventListener('click', ()=>agregarCarrito(item))
+        botonAgregar.addEventListener('click', 
+            ()=>{
+                if (payed ===false){
+                    agregarCarrito(item)
+                }
+            })
+        
     })
 }
 generarTienda();
 renderCarrito();
-
-
-
-
-
-
